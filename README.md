@@ -1,2 +1,2 @@
-ConnectFour
-===========
+Connect Four
+============
