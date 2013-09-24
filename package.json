@@ -1,0 +1,11 @@
+﻿{
+  "name": "ConnectFour",
+  "version": "1.0.0",
+  "description": "Yellow and red coins two player game",
+  "dependencies": {
+    "socket.io": "latest",
+    "express": "latest",
+
+  },
+  "author": "Miloš Đelić"
+}

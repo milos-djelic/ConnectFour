@@ -1,0 +1,133 @@
+<html>
+<head>
+	<meta charset='utf-8'>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/mystyle.css">
+</head>
+
+<body>
+	<div style= "text-align: center">
+	<div style ="font-size:xx-large; font-weight:bold">Connect Four</div>
+	<div id= "arrows" >
+		<span id = "arrow0"></span>
+		<span id = "arrow1"></span>
+		<span id = "arrow2"></span>
+		<span id = "arrow3"></span>
+		<span id = "arrow4"></span>
+		<span id = "arrow5"></span>
+		<span id = "arrow6"></span>
+	</div>
+	<div id = "container"></div>
+	<div id ="whoPlaysMessage" style="padding:10px">Wait for second player...</div>
+	<div id ="winner"></div>
+
+	</div>
+	<script>
+			var colors = ["yellow", "red"];
+			var cols = [0,0,0,0,0,0,0];
+			var myTurn = false;
+			var end = false;
+			var socket = io.connect('http://localhost:8000');
+			
+			socket.on("message", function(data) {
+			
+				//if new move is sent from opponent
+				if (data.move) { 
+					myTurn = true;
+					$("#whoPlaysMessage").html("It's your turn. Play!");
+					fillTheHole(data.move, oponentColor);					
+				}
+				
+				//begining of the game, both players are on, server sends who plays first
+				if (data.turn) {
+					playerColor = colors[data.turn-1];
+					oponentColor = colors[data.turn % 2];
+					
+					if(data.turn == 1 && !end) 
+					{
+						myTurn = true;
+						$("#whoPlaysMessage").html("You play first!");
+					}
+					else {
+						$("#whoPlaysMessage").html("Wait for opponent to play!");	
+					}
+					
+					for( var i = 0; i < 7; i += 1) {
+						$("#arrow"+i).css("background-color", playerColor);
+					}					
+				}				
+				//server sends who won, end of the game
+				if (data.win) {
+					console.log(data.win);
+					if (data.win == "win") {$("#winner").html("<h1>YOU WON!!!</h1>");};
+					if (data.win == "lost") {$("#winner").html("<h1>YOU LOST!!!</h1>");};
+					if (data.win == "tie") {$("#winner").html("<h1>NO ONE WON.</h1>");};
+					
+					$("#whoPlaysMessage").css("display", "none");
+				
+					end = true;
+					myTurn = false;
+				}			
+			});
+
+			var sendMove = function(col){
+				myTurn = false;
+				$("#whoPlaysMessage").html("Wait for opponent to play!");
+				socket.emit("submit-move", {move: col});
+			};
+			
+			var fillTheHole = function(col, color) {
+				var index = "#cel" + col  + cols[col];
+				$(index).css("background-color", color);
+				cols[col] += 1;
+			};
+			
+			//creating board from divs
+			for (var i = 5; i >= 0; i -= 1) {
+					var tempRow = document.createElement("div");
+					tempRow.id = "row" + i;
+					for (var j = 0; j < 7; j += 1) {
+						var tempDiv = document.createElement("div");
+						tempDiv.id = "cel" + j + i;
+						tempRow.appendChild(tempDiv);
+					}
+					document.getElementById("container").appendChild(tempRow);
+			}
+			
+			
+			
+			//listeners for selecting collumn 
+			
+			$("#container").on ("click", function(e) {
+					if (myTurn && !end) {
+					var selectedCol = e.target.id.charAt(3); 		//row5 -> returns 5
+					if (cols[selectedCol] < 6) { 								// limit check, if whole collumn if full do nothing
+						fillTheHole(selectedCol, playerColor);
+						sendMove(selectedCol);
+						$("#arrow"+selectedCol).css("visibility","hidden");	
+						setTimeout(function(){
+							$("#arrow"+selectedCol).css("visibility","visible");	
+						}, 300);
+					}	
+				}
+			});
+			// on hover over the collumns coin on top (arrow divs) appear
+			$("#container").children().hover(
+				function(e) {
+					var selectedCol = e.target.id.charAt(3); 
+					$("#arrow"+selectedCol).css("visibility","visible");
+					
+				},
+				function(e){
+					var selectedCol = e.target.id.charAt(3); 
+					$("#arrow"+selectedCol).css("visibility","hidden");
+				}
+			);
+			
+				 
+			
+	</script>
+
+</body>
+</html>

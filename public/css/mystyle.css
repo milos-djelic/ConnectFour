@@ -1,0 +1,48 @@
+body {
+font-family: "Helvetica";
+margin-left:auto;
+margin-right:auto;
+width:364px;
+
+
+}
+
+#container > div > div {
+	float: left;
+	width: 40px;
+	height: 40px;
+	margin: 6px;
+	background-color: white;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+}
+
+#container  {
+	width: 364px;
+	height: 312px;
+	padding: 10px;
+	background-color: darkblue;
+	-moz-border-radius: 30px;
+	border-radius: 30px;
+}
+
+#arrows > span {
+	visibility: hidden;
+	float: left;
+	width: 40px;
+	height: 40px;
+	margin: 6px;
+	
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+	font-size:large;
+}
+
+#arrows{
+
+	height: 52px; 
+	width: 364px; 
+	padding: 10px;
+	padding-bottom: 0;
+
+}
