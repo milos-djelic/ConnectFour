@@ -69,6 +69,4 @@ Game.prototype.checkInDirection = function(col, row, left, up) {
 	}
 	return true;
 };	
-exports.createGame = function(p1, p2, sendMove, sendWin) {
-    return new Game(p1, p2, sendMove, sendWin);
-};
+module.exports = Game;
