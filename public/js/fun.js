@@ -78,7 +78,7 @@ $("#container").on ("click", function(e) {
 		
 		var selectedCol = $("#" + e.target.id).data("col"); 		
 		console.log(selectedCol);
-		if (cols[selectedCol] < 6) { 								// limit check, if whole column if full do nothing
+		if (cols[selectedCol] < 6) { 	// limit check, if whole column if full do nothing
 		
 			fillTheHole(selectedCol, playerColor);
 			sendMove(selectedCol);
