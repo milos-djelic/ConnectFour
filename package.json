@@ -1,5 +1,6 @@
-﻿{
+{
     "name": "connect-four",
+"version" : "1.0.0",
     "description": "Yellow and red coins two player game",
     "author": "MilosDelic <miloss.djelic@gmail.com>",
     "dependencies": {
