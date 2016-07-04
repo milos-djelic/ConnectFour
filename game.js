@@ -1,4 +1,8 @@
-var Game = function (p1, p2, sendMove, sendWin) {
+//class game
+var Game = function(){};
+
+//creates
+Game.prototype.create = function (p1, p2, sendMove, sendWin) {
 	this.currentPlayer = p1;
 	this.waitingPlayer = p2;
 	this.sendMove = sendMove;
@@ -21,8 +25,8 @@ Game.prototype.onMove = function(col) {
 	this.currentPlayer = this.waitingPlayer;
 	this.waitingPlayer = temp;
 	if (!this.checkWin()) {
-		this.sendMove(col);		
-	}		
+		this.sendMove(col);
+	}
 };
 // Returns false if game is not over, othervise returns player1, player2 or 0 if tie
 Game.prototype.checkWin = function() {
@@ -32,7 +36,7 @@ Game.prototype.checkWin = function() {
 			if(this.board[col][row] == 0) {
 				empty = true;
 				continue;
-			} 
+			}
 			else if(this.checkElement(col, row)) {
 				this.sendWin(this.board[col][row]);
 				return;
@@ -68,5 +72,6 @@ Game.prototype.checkInDirection = function(col, row, left, up) {
 		else { return false; }
 	}
 	return true;
-};	
+};
+
 module.exports = Game;
