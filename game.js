@@ -1,7 +1,7 @@
 //class game
 var Game = function(){};
 
-//creates
+//creates a game with the players and passed functions
 Game.prototype.create = function (p1, p2, sendMove, sendWin) {
 	this.currentPlayer = p1;
 	this.waitingPlayer = p2;
@@ -16,7 +16,6 @@ Game.prototype.create = function (p1, p2, sendMove, sendWin) {
 		}
 	}
 };
-
 // Places new coin in board, switch players and sends move to opponent's board
 Game.prototype.onMove = function(col) {
 	this.board[col][this.cols[col]] = this.currentPlayer;
